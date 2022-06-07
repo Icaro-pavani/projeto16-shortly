@@ -18,5 +18,6 @@ CREATE TABLE "links" (
     "shortUrl" TEXT NOT NULL UNIQUE,
     "url" TEXT NOT NULL,
     "visitCount" INTEGER NOT NULL DEFAULT 0,
-    "userId" INTEGER NOT NULL REFERENCES "users"("id")
+    "userId" INTEGER NOT NULL REFERENCES "users"("id"),
+    "createAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
