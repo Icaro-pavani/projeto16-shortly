@@ -9,10 +9,10 @@ export default async function validSignIn(req, res, next) {
       email: stripHtml(email).result.trim(),
       password: stripHtml(password).result.trim(),
     };
-    const signInValidation = signInSchema.validateAsync(signInBody, {
+    const signInValidation = await signInSchema.validateAsync(signInBody, {
       abortEarly: false,
     });
-    res.locals.sinInBody = signInValidation;
+    res.locals.signInBody = signInValidation;
   } catch (error) {
     console.log(error);
     return res.status(422).send(error.message);
