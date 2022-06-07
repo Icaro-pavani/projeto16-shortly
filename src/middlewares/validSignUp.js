@@ -11,7 +11,9 @@ export default async function validSignUp(req, res, next) {
       password: stripHtml(password).result.trim(),
       confirmPassword: stripHtml(confirmPassword).result.trim(),
     };
-    const signUpValidation = await signUpSchema.validateAsync(signUpBody);
+    const signUpValidation = await signUpSchema.validateAsync(signUpBody, {
+      abortEarly: false,
+    });
     res.locals.signUpBody = signUpValidation;
   } catch (error) {
     console.log(error);
