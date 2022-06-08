@@ -71,3 +71,29 @@ export async function openShortUrl(req, res) {
     res.sendStatus(500);
   }
 }
+
+export async function deleteShortUrl(req, res) {
+  try {
+    const { id } = req.params;
+    const { user } = res.locals;
+
+    const shortResult = await db.query(`SELECT * FROM links WHERE id = $1`, [
+      parseInt(id),
+    ]);
+
+    if (shortResult.rows.length === 0) {
+      return res.sendStatus(404);
+    }
+
+    if (shortResult.rows[0].userId !== user.id) {
+      return res.sendStatus(401);
+    }
+
+    await db.query(`DELETE FROM links WHERE id = $1`, [parseInt(id)]);
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+}
