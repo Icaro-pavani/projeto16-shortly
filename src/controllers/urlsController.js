@@ -7,11 +7,11 @@ export async function postUrl(req, res) {
     const { url, user } = res.locals;
     const shortUrl = nanoid(shortUrlLength);
 
-    const userRow = await db.query(`SELECT * FROM users WHERE id = $1`, [
+    const userResult = await db.query(`SELECT * FROM users WHERE id = $1`, [
       parseInt(user.id),
     ]);
 
-    if (userRow.rows.length === 0) {
+    if (userResult.rows.length === 0) {
       return res.sendStatus(401);
     }
 
@@ -27,4 +27,47 @@ export async function postUrl(req, res) {
   }
 }
 
-export async function getUrlById(req, res) {}
+export async function getUrlById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const shortResult = await db.query(
+      `SELECT id, "shortUrl", url FROM links WHERE id = $1`,
+      [parseInt(id)]
+    );
+
+    if (shortResult.rows.length === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.status(200).send(shortResult.rows[0]);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+}
+
+export async function openShortUrl(req, res) {
+  try {
+    const { shortUrl } = req.params;
+
+    const linkResult = await db.query(
+      `SELECT * FROM links WHERE "shortUrl" = $1`,
+      [shortUrl]
+    );
+
+    if (linkResult.rows.length === 0) {
+      return res.sendStatus(404);
+    }
+
+    await db.query(
+      `UPDATE links SET "visitCount" = "visitCount" + 1 WHERE "shortUrl" = $1`,
+      [shortUrl]
+    );
+
+    res.redirect(linkResult.rows[0].url);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+}
