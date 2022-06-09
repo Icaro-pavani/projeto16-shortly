@@ -7,14 +7,6 @@ export async function postUrl(req, res) {
     const { url, user } = res.locals;
     const shortUrl = nanoid(shortUrlLength);
 
-    const userResult = await db.query(`SELECT * FROM users WHERE id = $1`, [
-      parseInt(user.id),
-    ]);
-
-    if (userResult.rows.length === 0) {
-      return res.sendStatus(401);
-    }
-
     await db.query(
       `INSERT INTO links ("shortUrl", url, "userId") VALUES ($1, $2, $3)`,
       [shortUrl, url, parseInt(user.id)]

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import authRouter from "./routes/authRouter.js";
 import urlsRouter from "./routes/urlsRouter.js";
+import usersRouter from "./routes/usersRouter.js";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use(authRouter);
 app.use(urlsRouter);
+app.use(usersRouter);
 
 app.listen(process.env.PORT, () => {
   console.log("App online on port " + process.env.PORT);
