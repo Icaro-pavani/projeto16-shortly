@@ -2,15 +2,15 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-import {userRepository} from "../repositories/repository.js";
+import { userRepository } from "../repositories/repository.js";
 
 dotenv.config();
 
 export async function signUp(req, res) {
   try {
     const SALT = 10;
-    const { signUpBody } = res.locals;
-    const { name, email, password } = signUpBody;
+    const { body } = res.locals;
+    const { name, email, password } = body;
     const checkUser = await userRepository.getUserByEmail(email);
 
     if (checkUser.rows.length > 0) {
@@ -29,8 +29,8 @@ export async function signUp(req, res) {
 
 export async function signIn(req, res) {
   try {
-    const { signInBody } = res.locals;
-    const { email, password } = signInBody;
+    const { body } = res.locals;
+    const { email, password } = body;
 
     const registeredUser = await userRepository.getUserByEmail(email);
 

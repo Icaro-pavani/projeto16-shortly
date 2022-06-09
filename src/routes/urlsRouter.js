@@ -6,12 +6,13 @@ import {
   openShortUrl,
   postUrl,
 } from "../controllers/urlsController.js";
+import validSchema from "../middlewares/validSchema.js";
 import validToken from "../middlewares/validToken.js";
-import validUrl from "../middlewares/validUrl.js";
+import urlSchema from "../schemas/urlSchema.js";
 
 const urlsRouter = Router();
 
-urlsRouter.post("/urls/shorten", validUrl, validToken, postUrl);
+urlsRouter.post("/urls/shorten", validSchema(urlSchema), validToken, postUrl);
 
 urlsRouter.get("/urls/:id", getUrlById);
 

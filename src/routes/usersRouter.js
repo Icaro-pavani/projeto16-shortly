@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import { getRanking, getUserById } from "../controllers/usersController.js";
 import validToken from "../middlewares/validToken.js";
 

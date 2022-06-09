@@ -1,5 +1,7 @@
 import Joi from "joi";
 
-const urlSchema = Joi.string().uri().required();
+const urlSchema = Joi.object({
+  url: Joi.string().uri().required(),
+});
 
 export default urlSchema;

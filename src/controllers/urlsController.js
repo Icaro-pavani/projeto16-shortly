@@ -5,7 +5,8 @@ import { urlRepository } from "../repositories/repository.js";
 export async function postUrl(req, res) {
   try {
     const shortUrlLength = 8;
-    const { url, user } = res.locals;
+    const { body, user } = res.locals;
+    const { url } = body;
     const shortUrl = nanoid(shortUrlLength);
 
     await urlRepository.insertShortUrl(shortUrl, url, user.id);
