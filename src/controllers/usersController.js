@@ -1,4 +1,7 @@
-import db from "../db.js";
+import {
+  urlRepository,
+  userLinkRepository,
+} from "../repositories/repository.js";
 
 export async function getUserById(req, res) {
   try {
@@ -9,14 +12,7 @@ export async function getUserById(req, res) {
       return res.sendStatus(401);
     }
 
-    const shortenedUrlsResult = await db.query(
-      `
-            SELECT id, "shortUrl", url, "visitCount"
-            FROM links
-            WHERE "userId" = $1
-          `,
-      [parseInt(id)]
-    );
+    const shortenedUrlsResult = await urlRepository.getUrlsByUserId(id);
 
     const shortenedUrls = shortenedUrlsResult.rows;
 
@@ -29,16 +25,7 @@ export async function getUserById(req, res) {
 
 export async function getRanking(req, res) {
   try {
-    const rankingResult = await db.query(
-      `
-       SELECT u.id, u.name, COUNT(l."userId")::INT AS "linksCount", COALESCE(SUM(l."visitCount")::INT, 0) AS "visitCount"
-       FROM users u
-       LEFT JOIN links l ON l."userId" = u.id
-       GROUP BY u.id
-       ORDER BY "visitCount" DESC
-       LIMIT 10
-      `
-    );
+    const rankingResult = await userLinkRepository.getUsersRanking();
 
     res.status(200).send(rankingResult.rows);
   } catch (error) {

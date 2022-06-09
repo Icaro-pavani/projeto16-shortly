@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
-import db from "./../db.js";
+import { userLinkRepository } from "../repositories/repository.js";
 import tokenSchema from "../schemas/tokenSchema.js";
 
 dotenv.config();
@@ -16,16 +16,7 @@ export default async function validToken(req, res, next) {
 
     const user = jwt.verify(tokenValidation, secretKey);
 
-    const userResult = await db.query(
-      `
-        SELECT u.id, u.name, SUM(l."visitCount")::INT as "visitCount"
-        FROM users u
-        JOIN links l ON l."userId" = u.id
-        WHERE u.id = $1
-        GROUP BY u.id
-      `,
-      [parseInt(user.id)]
-    );
+    const userResult = await userLinkRepository.getUserWithVisitCount(user.id);
 
     if (userResult.rows.length === 0) {
       return res.sendStatus(404);
