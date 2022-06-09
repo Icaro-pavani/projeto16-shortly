@@ -8,13 +8,6 @@ CREATE TABLE "users" (
     "createAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE "sessions" (
-    "id" SERIAL PRIMARY KEY,
-    "userId" INTEGER NOT NULL REFERENCES "users"("id"),
-    "token" TEXT NOT NULL,
-    "createAt" TIMESTAMP NOT NULL DEFAULT NOW() 
-);
-
 CREATE TABLE "links" (
     "id" SERIAL PRIMARY KEY,
     "shortUrl" TEXT NOT NULL UNIQUE,
