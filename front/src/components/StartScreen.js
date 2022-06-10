@@ -6,24 +6,6 @@ import axios from "axios";
 import Logo from "../images/Logo.svg";
 import Vector from "../images/Vector.svg";
 
-const data = [
-  {
-    name: "Fulaninha",
-    links: 32,
-    visitCount: 1300,
-  },
-  {
-    name: "Ciclano",
-    links: 20,
-    visitCount: 1000,
-  },
-  {
-    name: "Beltrano",
-    links: 15,
-    visitCount: 500,
-  },
-];
-
 export default function StartScreen() {
   const URL = "https://icaro-projeto16-shortly.herokuapp.com/";
 
@@ -51,12 +33,14 @@ export default function StartScreen() {
         <h1>Ranking</h1>
       </RankingTitle>
       <RankingContainer>
-        {ranking.map((person, index) => (
-          <p key={index}>
-            {index + 1}. {person.name} - {person.linksCount} links -{" "}
-            {person.visitCount} visualizações
-          </p>
-        ))}
+        {ranking.length === 0
+          ? "Loading..."
+          : ranking.map((person, index) => (
+              <p key={index}>
+                {index + 1}. {person.name} - {person.linksCount} links -{" "}
+                {person.visitCount} visualizações
+              </p>
+            ))}
       </RankingContainer>
       <h3>Crie sua conta para user nosso serviço!</h3>
     </StartScreenContainer>
@@ -86,6 +70,7 @@ const StartScreenContainer = styled.div`
 
       &.highlight {
         color: #5d9040;
+        opacity: 0.9;
       }
     }
   }

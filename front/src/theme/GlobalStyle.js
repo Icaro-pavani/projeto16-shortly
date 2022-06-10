@@ -139,6 +139,10 @@ const GlobalStyle = createGlobalStyle`
     body {
         font-family: 'Lexend Deca', sans-serif;
     }
+
+    ::placeholder {
+    color: #9c9c9c;
+  }
     
 `;
 
