@@ -28,8 +28,7 @@ export default function SignInScreen() {
     setDisabled(true);
     const promise = axios.post(`${URL}signin`, signinInfo);
     promise.then(({ data }) => {
-      const { token } = data;
-      setToken(token);
+      setToken({ ...data });
       navigate("/mylinks");
     });
     promise.catch((error) => {

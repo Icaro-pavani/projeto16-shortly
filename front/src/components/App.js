@@ -6,9 +6,10 @@ import GlobalStyle from "../theme/GlobalStyle";
 import StartScreen from "./StartScreen";
 import SignUpScreen from "./SignUpScreen";
 import SignInScreen from "./SignInScreen";
+import MyLinksScreen from "./MyLinksScreen";
 
 export default function App() {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState({});
   return (
     <>
       <GlobalStyle />
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/" element={<StartScreen />} />
             <Route path="/signup" element={<SignUpScreen />} />
             <Route path="/signin" element={<SignInScreen />} />
+            <Route path="/mylinks" element={<MyLinksScreen />} />
           </Routes>
         </BrowserRouter>
       </UserInfoContext.Provider>
