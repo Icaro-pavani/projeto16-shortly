@@ -1,29 +1,36 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Logo from "../images/Logo.svg";
+import UserInfoContext from "../context/UserInfoContext";
 
-export default function SignUpScreen() {
-  const [signupInfo, setSignupInfo] = useState({
-    name: "",
+export default function SignInScreen() {
+  const [signinInfo, setSigninInfo] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
   const [disabled, setDisabled] = useState(false);
+  const { setToken } = useContext(UserInfoContext);
 
   const navigate = useNavigate();
 
   const URL = "https://icaro-projeto16-shortly.herokuapp.com/";
 
-  function signupUser(event) {
+  function updateSigninInfo(event) {
+    const { name, value } = event.target;
+    setSigninInfo((prevState) => ({ ...prevState, [name]: value }));
+  }
+
+  function signinUser(event) {
     event.preventDefault();
     setDisabled(true);
-    const promise = axios.post(`${URL}signup`, signupInfo);
-    promise.then((response) => {
-      navigate("/signin");
+    const promise = axios.post(`${URL}signin`, signinInfo);
+    promise.then(({ data }) => {
+      const { token } = data;
+      setToken(token);
+      navigate("/mylinks");
     });
     promise.catch((error) => {
       alert(error.response.data);
@@ -31,62 +38,41 @@ export default function SignUpScreen() {
     });
   }
 
-  function updateSignupInfo(event) {
-    const { name, value } = event.target;
-    setSignupInfo((prevState) => ({ ...prevState, [name]: value }));
-  }
-
   return (
-    <SignUpContainer>
+    <SignInContainer>
       <header>
-        <h2 onClick={() => navigate("/signin")}>Entrar</h2>
-        <h2 className="highlight" onClick={() => navigate("/signup")}>
-          Cadastrar-se
+        <h2 className="highlight" onClick={() => navigate("/signin")}>
+          Entrar
         </h2>
+        <h2 onClick={() => navigate("/signup")}>Cadastrar-se</h2>
       </header>
       <LogoImg src={Logo} alt="Logo" />
-      <StyledForm onSubmit={signupUser}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Nome"
-          disabled={disabled}
-          onChange={updateSignupInfo}
-          value={signupInfo.name}
-        />
+      <StyledForm onSubmit={signinUser}>
         <input
           type="email"
           name="email"
           placeholder="E-mail"
           disabled={disabled}
-          onChange={updateSignupInfo}
-          value={signupInfo.email}
+          onChange={updateSigninInfo}
+          value={signinInfo.email}
         />
         <input
           type="password"
           name="password"
           placeholder="Senha"
           disabled={disabled}
-          onChange={updateSignupInfo}
-          value={signupInfo.password}
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirmar senha"
-          disabled={disabled}
-          onChange={updateSignupInfo}
-          value={signupInfo.confirmPassword}
+          onChange={updateSigninInfo}
+          value={signinInfo.password}
         />
         <button type="submit" disabled={disabled}>
-          Criar Conta
+          Entrar
         </button>
       </StyledForm>
-    </SignUpContainer>
+    </SignInContainer>
   );
 }
 
-const SignUpContainer = styled.div`
+const SignInContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;

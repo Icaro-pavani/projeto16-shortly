@@ -18,6 +18,7 @@ export default function StartScreen() {
     promise.then(({ data }) => {
       setRanking([...data]);
     });
+    promise.catch((error) => console.log(error));
   }, []);
   return (
     <StartScreenContainer>
@@ -25,7 +26,7 @@ export default function StartScreen() {
         <h2 className="highlight" onClick={() => navigate("/signin")}>
           Entrar
         </h2>
-        <h2 onClick={() => navigate("signup")}>Cadastrar-se</h2>
+        <h2 onClick={() => navigate("/signup")}>Cadastrar-se</h2>
       </header>
       <LogoImg src={Logo} alt="Logo" />
       <RankingTitle>
