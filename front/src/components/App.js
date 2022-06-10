@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import UserInfoContext from "../context/UserInfoContext";
 import GlobalStyle from "../theme/GlobalStyle";
+import StartScreen from "./StartScreen";
 
 export default function App() {
   return (
@@ -10,7 +11,7 @@ export default function App() {
       <UserInfoContext.Provider value={{}}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<h1>Tese</h1>} />
+            <Route path="/" element={<StartScreen />} />
           </Routes>
         </BrowserRouter>
       </UserInfoContext.Provider>
