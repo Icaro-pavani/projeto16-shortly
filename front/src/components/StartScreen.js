@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Logo from "../images/Logo.svg";
 import Vector from "../images/Vector.svg";
@@ -22,11 +25,25 @@ const data = [
 ];
 
 export default function StartScreen() {
+  const URL = "https://icaro-projeto16-shortly.herokuapp.com/";
+
+  const [ranking, setRanking] = useState([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const promise = axios.get(`${URL}ranking`);
+    promise.then(({ data }) => {
+      setRanking([...data]);
+    });
+  }, []);
   return (
     <StartScreenContainer>
       <header>
-        <h2>Entrar</h2>
-        <h2>Cadastrar-se</h2>
+        <h2 className="highlight" onClick={() => navigate("/signin")}>
+          Entrar
+        </h2>
+        <h2 onClick={() => navigate("signup")}>Cadastrar-se</h2>
       </header>
       <LogoImg src={Logo} alt="Logo" />
       <RankingTitle>
@@ -34,9 +51,9 @@ export default function StartScreen() {
         <h1>Ranking</h1>
       </RankingTitle>
       <RankingContainer>
-        {data.map((person, index) => (
+        {ranking.map((person, index) => (
           <p key={index}>
-            {index + 1}. {person.name} - {person.links} links -{" "}
+            {index + 1}. {person.name} - {person.linksCount} links -{" "}
             {person.visitCount} visualizações
           </p>
         ))}
@@ -65,6 +82,11 @@ const StartScreenContainer = styled.div`
       font-weight: 400;
       color: #9c9c9c;
       margin-right: 22px;
+      cursor: pointer;
+
+      &.highlight {
+        color: #5d9040;
+      }
     }
   }
 
