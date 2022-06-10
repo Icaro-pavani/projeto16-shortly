@@ -7,6 +7,7 @@ import StartScreen from "./StartScreen";
 import SignUpScreen from "./SignUpScreen";
 import SignInScreen from "./SignInScreen";
 import MyLinksScreen from "./MyLinksScreen";
+import Ranking from "./Ranking";
 
 export default function App() {
   const [token, setToken] = useState({});
@@ -20,6 +21,7 @@ export default function App() {
             <Route path="/signup" element={<SignUpScreen />} />
             <Route path="/signin" element={<SignInScreen />} />
             <Route path="/mylinks" element={<MyLinksScreen />} />
+            <Route path="/ranking" element={<Ranking />} />
           </Routes>
         </BrowserRouter>
       </UserInfoContext.Provider>
